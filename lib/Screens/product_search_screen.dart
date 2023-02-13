@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qtec_test/Constances/networking.dart';
 import 'package:qtec_test/Screens/product_detail_screen1.dart';
-
 import 'screens.dart';
 
 class ProductSearchScreen extends StatefulWidget {
@@ -12,8 +12,16 @@ class ProductSearchScreen extends StatefulWidget {
 
 class _ProductSearchScreenState extends State<ProductSearchScreen> {
 
+  Networking networking = Networking();
+
   bool showItemCounter = false;
   bool showOutOfStock = false;
+
+  @override
+  void initState() {
+    networking.getProduct('rice');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -227,6 +235,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                     );
                   }),
                 ),
+
               ],
             ),
           ),
