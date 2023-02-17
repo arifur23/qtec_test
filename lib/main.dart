@@ -1,26 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qtec_test/data/apiRepository.dart';
+import 'package:qtec_test/logic/CartBloc/cart_bloc.dart';
 
-import 'Screens/screens.dart';
+import 'logic/ProductBloc/product_bloc.dart';
+import 'logic/ProductBloc/product_event.dart';
+import 'logic/SearchCubit/search_cubit.dart';
+import 'presentation/Screens/screens.dart';
+
 
 void main() {
-  runApp(const App());
+
+  runApp(App(apiRepository: ApiRepository(),));
 }
 
-class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+class App extends StatelessWidget {
+  final ApiRepository apiRepository;
 
-  @override
-  State<App> createState() => _AppState();
-}
+  const App({super.key, required this.apiRepository});
 
-class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xfff7f2ff)
-      ),
-      home: ProductSearchScreen(),
+
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+              create: (_) => CartBloc(apiRepository: apiRepository
+              )..add(CartStarted())
+          ),
+          BlocProvider(create: (_) => ProductsBloc(apiRepository: apiRepository
+          )..add(InitialProductsEvent())
+          ),
+          BlocProvider(create: (_) => SearchCubit()),
+
+        ],
+        child: MaterialApp(
+          theme: ThemeData(
+              scaffoldBackgroundColor: const Color(0xfff7f2ff)
+          ),
+          home: const ProductSearchScreen(),
+        )
     );
   }
 }
