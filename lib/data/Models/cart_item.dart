@@ -3,7 +3,7 @@ import 'package:qtec_test/data/Models/result.dart';
 
 class CartItem extends Equatable {
 
-  late int id;
+  int? id;
   late Result product;
   late int quantity;
   CartItem({required this.product, required this.quantity});

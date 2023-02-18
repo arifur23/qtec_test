@@ -21,6 +21,7 @@ dependencies:
   carousel_slider: ^4.2.1
   polygon_clipper: ^1.0.2
   flutter_pagination: ^0.0.8
+  google_language_fonts: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -61,9 +62,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
 #  fonts:
-#    - family: Noto Fonts
+#    - family: Hind Siliguri Regular
 #      fonts:
-#        - asset: assets/NotoSansBengali-Black.ttf
+#        - asset: assets/HindSiliguri-Regular.ttf
 #          style: italic
   #   - family: Trajan Pro
   #     fonts:

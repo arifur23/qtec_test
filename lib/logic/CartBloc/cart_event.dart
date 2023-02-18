@@ -14,7 +14,7 @@ class CartStarted extends CartEvent{
 class CartRequestForShowPanel extends CartEvent{
   final CartItem item;
 
-  const CartRequestForShowPanel(this.item);
+  const CartRequestForShowPanel({required this.item});
 
 
   @override
@@ -27,7 +27,7 @@ class CartItemAdded extends CartEvent{
 
   final CartItem item;
 
-  const CartItemAdded(this.item);
+  const CartItemAdded({required this.item});
 
 
   @override
@@ -39,7 +39,7 @@ class CartItemRemoved extends CartEvent{
 
   final CartItem item;
 
-  CartItemRemoved(this.item);
+  const CartItemRemoved({required this.item});
 
   @override
   // TODO: implement props

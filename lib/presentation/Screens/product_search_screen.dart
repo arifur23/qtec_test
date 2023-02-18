@@ -8,6 +8,7 @@ import 'package:qtec_test/logic/CartBloc/cart_bloc.dart';
 import 'package:qtec_test/logic/ProductBloc/product_bloc.dart';
 import 'package:qtec_test/logic/ProductBloc/product_state.dart';
 import '../../logic/ProductBloc/product_event.dart';
+import 'package:google_language_fonts/google_language_fonts.dart';
 import 'screens.dart';
 
 class ProductSearchScreen extends StatefulWidget {
@@ -158,8 +159,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(
-                      builder: (
-                          _) => const ProductDetailScreen()));
+                      builder: (_) => ProductDetailScreen(product: products[index])));
                 },
                 child: Container(
                   height: (size.height * .35) - 25,
@@ -176,6 +176,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                         height: size.height * .14,
                         width: size.width * .25,
                         color: Colors.yellow,
+                        child: Image.network(products[index].image, fit: BoxFit.cover,),
                       ),
                       const SizedBox(height: 20,),
                       Container(
@@ -183,12 +184,11 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                           width: size.width * .4,
                           child: Text(
                               products[index].productName,
-                              style: TextStyle(
-                                  fontWeight: FontWeight
-                                      .bold,
-                                  fontSize: 25,
-                                  color: Colors.black
-                                      .withOpacity(.8)))
+                              style: BengaliFonts.galada(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black.withOpacity(.7)
+                              )
+                          )
                       ),
                       Column(
                         children: [
@@ -212,7 +212,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                                               .5)),),
                                     const SizedBox(
                                       width: 10,),
-                                    const Text('\$ 20.00',
+                                     Text('\$ ${products[index].charge.currentCharge}',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18,
@@ -256,7 +256,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                                                 .5))),
                                     const SizedBox(
                                       width: 10,),
-                                    Text('\$ 20.00',
+                                    Text('\$ ${products[index].charge.sellingPrice}',
                                         style: TextStyle(
                                             fontWeight: FontWeight
                                                 .bold,
@@ -280,7 +280,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                                                 .5))),
                                     const SizedBox(
                                       width: 5,),
-                                    Text('\$ 22.00',
+                                    Text('\$ ${products[index].charge.profit}',
                                         style: TextStyle(
                                             fontWeight: FontWeight
                                                 .bold,
@@ -309,63 +309,70 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                         return Positioned(
                             bottom: 5,
                             left: 20,
-                            child: Opacity(
-                              opacity: 1,
-                              child: Container(
-                                height: 50,
-                                width: 160,
-                                decoration: BoxDecoration(
-                                    color: const Color(0xffffcce4),
-                                    borderRadius: BorderRadius
-                                        .circular(30)
-                                ),
-                                child: Row(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-
-                                      },
-                                      child: Container(
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius
-                                              .circular(100),
-                                          color: const Color(
-                                              0xffffbfdd),
-                                        ),
-                                        child: Center(
-                                            child: Icon(
-                                              Icons.remove, size: 25,
-                                              color: Colors.white
-                                                  .withOpacity(.9),)
-                                        ),
+                            child: Container(
+                              height: 50,
+                              width: 160,
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffffcce4),
+                                  borderRadius: BorderRadius
+                                      .circular(30)
+                              ),
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      final isProductInCart = state.cart.items.contains(CartItem(product: products[index], quantity: 1));
+                                      if(isProductInCart){
+                                        print('removed');
+                                        context.read<CartBloc>().add(CartItemRemoved(item: CartItem(product: products[index], quantity: 0)));
+                                        print(state.cart.items.length.toString());
+                                      }
+                                      else{
+                                        return print('Not removed');
+                                      }
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius
+                                            .circular(100),
+                                        color: const Color(
+                                            0xffffbfdd),
+                                      ),
+                                      child: Center(
+                                          child: Icon(
+                                            Icons.remove, size: 25,
+                                            color: Colors.white
+                                                .withOpacity(.9),)
                                       ),
                                     ),
-                                    const SizedBox(width: 20,),
-                                    const Text('5 pices'),
-                                    const SizedBox(width: 12,),
-                                    GestureDetector(
-                                      onTap: (){
-
-                                      },
-                                      child: Container(
-                                        height: 40,
-                                        width: 40,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                100),
-                                            color: const Color(0xff6210e1)
-                                        ),
-                                        child: Center(
-                                            child: Icon(Icons.add, size: 25,
-                                              color: Colors.white.withOpacity(
-                                                  .9),)
-                                        ),
+                                  ),
+                                  const SizedBox(width: 20,),
+                                  const Text('5 pices'),
+                                  const SizedBox(width: 12,),
+                                  GestureDetector(
+                                    onTap: (){
+                                      context.read<CartBloc>().add(CartItemAdded(item: CartItem(product: products[index], quantity: 1)));
+                                      print('added');
+                                      print(state.cart.items.length.toString());
+                                    },
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              100),
+                                          color: const Color(0xff6210e1)
+                                      ),
+                                      child: Center(
+                                          child: Icon(Icons.add, size: 25,
+                                            color: Colors.white.withOpacity(
+                                                .9),)
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             )
                         );
@@ -376,7 +383,7 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                           left: 80,
                           child: GestureDetector(
                             onTap: (){
-
+                              context.read<CartBloc>().add(CartRequestForShowPanel(item: CartItem(product: products[index], quantity: 1)));
                             },
                             child: Container(
                               height: 40,
@@ -397,13 +404,13 @@ class _ProductSearchScreenState extends State<ProductSearchScreen> {
                       }
                     }
                     if(state is CartLoading){
-                      return Positioned(
+                      return const Positioned(
                           bottom: 10,
                           left: 80,
-                          child: Text('jjkk')
+                          child: Text('')
                       );
                     }
-                    return Text('data');
+                    return const Text('data');
                   }
               ),
 
